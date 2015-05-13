@@ -32,7 +32,7 @@ dbReadSpatial <-
              NULL) {
     ## Build query and fetch the target table
     # Get column names
-    q.res <-dbSendQuery(
+    q.res <-RPostgreSQL::dbSendQuery(
         con, statement = paste(
           "SELECT column_name FROM information_schema.columns WHERE table_name ='", 
           tablename,
@@ -42,7 +42,7 @@ dbReadSpatial <-
             "")
       )
     schema.table = paste(schemaname, ".", tablename, sep = "")
-    q.df <- fetch(q.res,-1)
+    q.df <- RPostgreSQL::fetch(q.res,-1)
     # Some safe programming
     if (!(geomcol %in% q.df[,1])) {
       stop(paste("No", geomcol, "column in specified table."))
@@ -56,11 +56,11 @@ dbReadSpatial <-
     query <-
       paste("SELECT", paste(q.df[,1][q.df[,1] != geomcol], collapse = ", "),
             paste("FROM ", schema.table,";",sep = ""))
-    t.res <- dbSendQuery(con, statement = query)
-    t.df <- fetch(t.res,-1)
+    t.res <- RPostgreSQL::dbSendQuery(con, statement = query)
+    t.df <- RPostgreSQL::fetch(t.res,-1)
     
     ## Get srid and create proj4 string
-    srid <- dbGetQuery(
+    srid <- RPostgreSQL::dbGetQuery(
       conn,
       paste(
         "SELECT Find_SRID('",schemaname,"', '",tablename,"', '",geomcol,"');",sep =
@@ -70,7 +70,7 @@ dbReadSpatial <-
     p4s <- paste("+init=epsg:",srid[1,],sep = "")
     
     ## Get spatial data via geojson
-    res <- dbGetQuery(
+    res <- RPostgreSQL::dbGetQuery(
       con,
       paste(
         "SELECT row_to_json(fc)::text geojson_text ",
@@ -88,7 +88,7 @@ dbReadSpatial <-
     )
     
     down.spdf <-
-      readOGR(res$geojson_text, "OGRGeoJSON", verbose = F, p4s = p4s)
+      rgdal::readOGR(res$geojson_text, "OGRGeoJSON", verbose = F, p4s = p4s)
     spatial.df <- merge.spdf(down.spdf,t.df,by = idcol)
     
     return(spatial.df)
