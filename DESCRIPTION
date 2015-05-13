@@ -1,10 +1,14 @@
 Package: rpostgis
-Title: What the Package Does (one line, title case)
+Title: A Package for Import/Export of Spatial Data from PostGIS
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph)
+Authors@R: person("Josh", "London", email = "josh.london@noaa.gov", role = c("aut", "cre"))
+Description: Rpostgis provides simple access to PostgreSQL/PostGIS spatial databases
+  without the need to build the `rgdal` packages from source (pre-built binaries
+  on CRAN are not built against the PostgreSQL/PostGIS libraries). Initially,
+  the focus of this package is on reading and writing data, but further 
+  development for various spatial functions could be considered.
 Depends: R (>= 3.2.0)
-License: What license is it under?
+License: file LICENSE
 LazyData: true
 Imports: rgdal,
     RPostgreSQL,
