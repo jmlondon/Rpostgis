@@ -61,7 +61,7 @@ dbReadSpatial <-
     
     ## Get srid and create proj4 string
     srid <- RPostgreSQL::dbGetQuery(
-      conn,
+      con,
       paste(
         "SELECT Find_SRID('",schemaname,"', '",tablename,"', '",geomcol,"');",sep =
           ""
