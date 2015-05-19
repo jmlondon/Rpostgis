@@ -15,7 +15,7 @@ merge.spdf <- function (x, y, by, ...) {
   new_data <- data.frame(x@data, y[i,])
   row.names(new_data) <- row.names(x@data)
   if(class(x) == "SpatialPolygonsDataFrame") {
-    sp::SpatialPolygonsDataFrame(geometry(x), new_data)
+    sp::SpatialPolygonsDataFrame(sp::geometry(x), new_data)
   }
   else if(class(x) == "SpatialPointsDataFrame") {
     sp::SpatialPointsDataFrame(geometry(x),new_data)
